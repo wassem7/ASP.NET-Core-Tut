@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
 using SeemzyVilla_VillaApi.Models;
+using SeemzyVilla_VillaApi.Models.Dtos;
 
 namespace SeemzyVilla_VillaApi.Controllers
 {
@@ -10,9 +11,9 @@ namespace SeemzyVilla_VillaApi.Controllers
     {
 
         [HttpGet]
-        public IEnumerable<Villa> GetVillas()
+        public IEnumerable<VillaDTO> GetVillas()
         {
-            return new List<Villa>() { new Villa() { Id = 100, Name = "Vandax Vilka" }, new Villa() { Id = 101, Name = "Higher Heights Villa" }, new Villa() { Id = 102, Name = "Bandox Villa " } };
+            return new List<VillaDTO>() { new VillaDTO() { Id = 100, Name = "Vandax Vilka" }, new VillaDTO() { Id = 101, Name = "Higher Heights Villa" }, new Villa() { Id = 102, Name = "Bandox Villa " } };
         }
 
     }
