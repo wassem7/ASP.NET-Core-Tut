@@ -4,7 +4,7 @@ namespace SeemzyVilla_VillaApi.Data
 {
     public static class DataStore
     {
-        public static List<VillaDTO> villas = new List<VillaDTO>()
+        public static List<VillaDTO> VillaList = new List<VillaDTO>()
         {
             new VillaDTO() { Id = 100, Name = "Vandax Vilka" },
             new VillaDTO() { Id = 101, Name = "Higher Heights Villa" },

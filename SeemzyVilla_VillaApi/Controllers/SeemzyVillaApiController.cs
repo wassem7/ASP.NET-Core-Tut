@@ -10,9 +10,26 @@ namespace SeemzyVilla_VillaApi.Controllers
     public class SeemzyVillaController : ControllerBase
     {
         [HttpGet]
-        public IEnumerable<VillaDTO> GetVillas()
+        public ActionResult<IEnumerable<VillaDTO>> GetVillas()
         {
-            return DataStore.villas;
+            return Ok(DataStore.VillaList);
+        }
+
+        //[HttpGet("id")]
+        [HttpGet("{id:int}")]
+        public ActionResult<VillaDTO> GetVilla(int id)
+        {
+            if (id == 0)
+            {
+                return BadRequest();
+            }
+
+            var result = DataStore.VillaList.FirstOrDefault(villa => villa.Id == id);
+            if (result == null)
+            {
+                return NotFound();
+            }
+            return Ok(result);
         }
     }
 }
