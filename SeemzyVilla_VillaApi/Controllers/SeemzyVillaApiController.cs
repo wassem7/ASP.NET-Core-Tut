@@ -10,6 +10,7 @@ namespace SeemzyVilla_VillaApi.Controllers
     public class SeemzyVillaController : ControllerBase
     {
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<VillaDTO>> GetVillas()
         {
             return Ok(DataStore.VillaList);
@@ -17,6 +18,9 @@ namespace SeemzyVilla_VillaApi.Controllers
 
         //[HttpGet("id")]
         [HttpGet("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<VillaDTO> GetVilla(int id)
         {
             if (id == 0)
