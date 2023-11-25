@@ -6,9 +6,9 @@ namespace SeemzyVilla_VillaApi.Data
     {
         public static List<VillaDTO> VillaList = new List<VillaDTO>()
         {
-            new VillaDTO() { Id = 100, Name = "Vandax Vilka" },
-            new VillaDTO() { Id = 101, Name = "Higher Heights Villa" },
-            new VillaDTO() { Id = 102, Name = "Bandox Villa " }
+            new VillaDTO() { Id = 1, Name = "North East Villa" },
+            new VillaDTO() { Id = 2, Name = "Higher Heights Villa" },
+            new VillaDTO() { Id = 3, Name = "Oasis Villa " }
         };
     }
 }
