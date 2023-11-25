@@ -69,5 +69,27 @@ namespace SeemzyVilla_VillaApi.Controllers
 
             return CreatedAtRoute("GetVilla", new { id = villadto.Id }, villadto);
         }
+
+        [HttpDelete("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public IActionResult DeleteVilla(int id)
+        {
+            if (id == 0)
+            {
+                return BadRequest();
+            }
+
+            var villa = DataStore.VillaList.FirstOrDefault(villa => villa.Id == id);
+
+            if (villa == null)
+            {
+                return NotFound();
+            }
+
+            DataStore.VillaList.Remove(villa);
+            return NoContent();
+        }
     }
 }
