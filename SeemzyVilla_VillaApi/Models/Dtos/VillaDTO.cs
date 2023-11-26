@@ -9,5 +9,9 @@ namespace SeemzyVilla_VillaApi.Models.Dtos
         [Required]
         [MaxLength(20)]
         public string Name { get; set; }
+
+        public int Occupancy { get; set; }
+
+        public int Sqrft { get; set; }
     }
 }
