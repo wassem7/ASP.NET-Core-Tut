@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using SeemzyVilla_VillaApi.Data;
 using SeemzyVilla_VillaApi.Models;
@@ -10,10 +11,18 @@ namespace SeemzyVilla_VillaApi.Controllers
     [ApiController]
     public class SeemzyVillaController : ControllerBase
     {
+        private readonly ILogger<SeemzyVillaController> _logger;
+
+        public SeemzyVillaController(ILogger<SeemzyVillaController> logger)
+        {
+            _logger = logger;
+        }
+
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<VillaDTO>> GetVillas()
         {
+            _logger.LogInformation("Getting all villas..");
             return Ok(DataStore.VillaList);
         }
 
@@ -26,6 +35,7 @@ namespace SeemzyVilla_VillaApi.Controllers
         {
             if (id == 0)
             {
+                _logger.LogError("Get Villa error with Id : {0}", id);
                 return BadRequest();
             }
 
@@ -92,7 +102,7 @@ namespace SeemzyVilla_VillaApi.Controllers
             return NoContent();
         }
 
-        [HttpPut]
+        [HttpPut("{id:int}", Name = "UpdateVilla")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -113,6 +123,34 @@ namespace SeemzyVilla_VillaApi.Controllers
             villa.Name = villadto.Name;
             villa.Occupancy = villadto.Occupancy;
             villa.Sqrft = villadto.Sqrft;
+
+            return NoContent();
+        }
+
+        [HttpPatch]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult PartialUpdateVilla(int id, JsonPatchDocument<VillaDTO> patchdto)
+        {
+            if (patchdto == null || id == 0)
+            {
+                return BadRequest();
+            }
+
+            var villa = DataStore.VillaList.FirstOrDefault(villa => villa.Id == id);
+
+            if (villa == null)
+            {
+                return NotFound();
+            }
+
+            patchdto.ApplyTo(villa, ModelState);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
             return NoContent();
         }
