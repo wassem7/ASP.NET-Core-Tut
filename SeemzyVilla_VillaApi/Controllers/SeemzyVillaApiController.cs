@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using SeemzyVilla_VillaApi.Data;
+using SeemzyVilla_VillaApi.Logging;
 using SeemzyVilla_VillaApi.Models;
 using SeemzyVilla_VillaApi.Models.Dtos;
 
@@ -11,9 +12,9 @@ namespace SeemzyVilla_VillaApi.Controllers
     [ApiController]
     public class SeemzyVillaController : ControllerBase
     {
-        private readonly ILogger<SeemzyVillaController> _logger;
+        private readonly ILogging _logger;
 
-        public SeemzyVillaController(ILogger<SeemzyVillaController> logger)
+        public SeemzyVillaController(ILogging logger)
         {
             _logger = logger;
         }
@@ -22,7 +23,7 @@ namespace SeemzyVilla_VillaApi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<VillaDTO>> GetVillas()
         {
-            _logger.LogInformation("Getting all villas..");
+            _logger.Log("Getting all villas..", "");
             return Ok(DataStore.VillaList);
         }
 
@@ -35,7 +36,7 @@ namespace SeemzyVilla_VillaApi.Controllers
         {
             if (id == 0)
             {
-                _logger.LogError("Get Villa error with Id : {0}", id);
+                _logger.Log("Get Villa error with Id : " + id, "error");
                 return BadRequest();
             }
 
@@ -69,6 +70,7 @@ namespace SeemzyVilla_VillaApi.Controllers
 
             if (villadto.Id > 0)
             {
+                _logger.Log("Make the Id bro ", "error");
                 return new BadRequestObjectResult("Charle , make the id 0 wai !");
             }
 
@@ -76,7 +78,7 @@ namespace SeemzyVilla_VillaApi.Controllers
                 DataStore.VillaList.OrderByDescending(villa => villa.Id).FirstOrDefault().Id + 1;
 
             DataStore.VillaList.Add(villadto);
-
+            _logger.Log("Villa created successfully ", "");
             return CreatedAtRoute("GetVilla", new { id = villadto.Id }, villadto);
         }
 
@@ -88,6 +90,7 @@ namespace SeemzyVilla_VillaApi.Controllers
         {
             if (id == 0)
             {
+                _logger.Log("Id should not be 0", "error");
                 return BadRequest();
             }
 
@@ -95,10 +98,12 @@ namespace SeemzyVilla_VillaApi.Controllers
 
             if (villa == null)
             {
+                _logger.Log("Villa not found", "error");
                 return NotFound();
             }
 
             DataStore.VillaList.Remove(villa);
+            _logger.Log("Villa deleted", "");
             return NoContent();
         }
 

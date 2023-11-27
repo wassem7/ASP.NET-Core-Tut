@@ -1,4 +1,4 @@
-using Serilog;
+using SeemzyVilla_VillaApi.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 //builder.Host.UseSerilog();
 builder.Services.AddControllers().AddNewtonsoftJson();
+builder.Services.AddSingleton<ILogging, Logging>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
