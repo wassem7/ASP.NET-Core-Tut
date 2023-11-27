@@ -1,6 +1,15 @@
+using Microsoft.EntityFrameworkCore;
+using SeemzyVilla_VillaApi.Data;
 using SeemzyVilla_VillaApi.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder
+    .Services
+    .AddDbContext<ApplicationDbContext>(option =>
+    {
+        option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSqlConnection"));
+    });
 
 // Add services to the container.
 
